@@ -2,6 +2,6 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("CIDI Rocks on!");
+        System.out.println("CI/DI Rocks on!");
     }
 }
