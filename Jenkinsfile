@@ -1,42 +1,29 @@
 pipeline {
     agent any
-
-
     stages {
         stage('Clone') {
             steps {
-                // Get some code from a GitHub repository
+                // Récupérer le code depuis un dépôt GitHub
                 git 'https://github.com/ninotahrbx/test-jenkins.git'
-
             }
-
         }
-
         stage('Test') {
             steps {
-                // Get some code from a GitHub repository
-                bat "mvn test"
-
+                // Exécuter les tests avec Maven
+                sh 'mvn test'
             }
-
         }
-
         stage('Package') {
             steps {
-                // Get some code from a GitHub repository
-                bat "mvn package"
-
-            }
-
-        }
-
-    } post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    //junit '*/target/surefire-reports/TEST-.xml'
-                    archiveArtifacts 'target/*.jar'
-                }
+                // Construire et packager l'application avec Maven
+                sh 'mvn package'
             }
         }
-    
+    }
+    post {
+        success {
+            // Si Maven a pu exécuter les tests avec succès, enregistrer les résultats des tests et archiver le fichier JAR
+            archiveArtifacts 'target/*.jar'
+        }
+    }
+}
