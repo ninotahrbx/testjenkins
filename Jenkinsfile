@@ -6,7 +6,7 @@ pipeline {
         stage('Clone') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/ninotahrbx/testjenkins.git'
+                git 'https://github.com/ninotahrbx/test-jenkins.git'
 
             }
 
