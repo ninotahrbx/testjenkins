@@ -1,40 +1,42 @@
 pipeline {
     agent any
 
+
     stages {
+        stage('Clone') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/ninotahrbx/testjenkins.git'
+
+            }
+
+        }
+
+        stage('Test') {
+            steps {
+                // Get some code from a GitHub repository
+                bat "mvn test"
+
+            }
+
+        }
+
         stage('Package') {
             steps {
-            	sh 'mvn clean'
-                sh 'mvn package' 
+                // Get some code from a GitHub repository
+                bat "mvn package"
+
+            }
+
+        }
+
+    } post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    //junit '*/target/surefire-reports/TEST-.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
             }
         }
-        stage('Analyse') {
-            steps {
-            	sh 'mvn checkstyle:checkstyle'
-                sh 'mvn spotbugs:spotbugs'
-                sh 'mvn pmd:pmd' 
-            }
-        }
-        stage('Publish') {
-            steps {
-                archiveArtifacts '/target/*.jar'
-            }
-        }
-        
-    }
     
-    post {
-        always {
-            junit '**/surefire-reports/*.xml'
-            
-			recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
-            recordIssues enabledForFailure: true, tool: checkStyle()
-            recordIssues enabledForFailure: true, tool: spotBugs()
-            recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
-            recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
-            
-        }
-
-    }
-
-}
