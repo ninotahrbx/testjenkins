@@ -4,7 +4,7 @@ pipeline {
         stage('Clone') {
             steps {
                 // Récupérer le code depuis un dépôt GitHub
-                git 'https://github.com/ninotahrbx/test-jenkins.git'
+                git branch: 'master', url: 'https://github.com/ninotahrbx/test-jenkins.git'
             }
         }
         stage('Test') {
