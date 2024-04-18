@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone') {
+            steps {
+                // Récupérer le code depuis un dépôt GitHub
+                git branch: 'master', url: 'https://github.com/ninotahrbx/test-jenkins.git'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Exécuter les tests avec Maven
+                sh 'mvn test'
+            }
+        }
+        stage('Package') {
+            steps {
+                // Construire et packager l'application avec Maven
+                sh 'mvn package'
+            }
+        }
+    }
+    post {
+        success {
+            // Si Maven a pu exécuter les tests avec succès, enregistrer les résultats des tests et archiver le fichier JAR
+            archiveArtifacts 'target/*.jar'
+        }
+    }
+}
